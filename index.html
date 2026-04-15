@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кликер Игра</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .score-display {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .stats-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 1.2rem;
+        }
+        
+        /* Main Area */
+        .main-area {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Click Section */
+        .click-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .click-button-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .click-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(145deg, #ff6b6b, #ee5a6f);
+            cursor: pointer;
+            transition: all 0.1s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            font-size: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .click-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .click-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .click-button.skin-1 {
+            background: linear-gradient(145deg, #4facfe, #00f2fe);
+        }
+        
+        .click-button.skin-2 {
+            background: linear-gradient(145deg, #43e97b, #38f9d7);
+        }
+        
+        .click-button.skin-3 {
+            background: linear-gradient(145deg, #fa709a, #fee140);
+        }
+        
+        .click-button.skin-4 {
+            background: linear-gradient(145deg, #a8edea, #fed6e3);
+        }
+        
+        .click-button.skin-5 {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+        }
+        
+        .click-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            z-index: 1;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translateY(-100px);
+            }
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .tab-btn.active {
+            background: rgba(255, 215, 0, 0.6);
+            color: #333;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .tab-panel h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        /* Shop Grid */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            padding: 10px;
+        }
+        
+        .shop-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .shop-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .shop-item-icon {
+            font-size: 2.5rem;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .shop-item-info {
+            flex: 1;
+        }
+        
+        .shop-item-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .shop-item-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        
+        .shop-item-price {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .shop-item.owned .shop-item-price {
+            color: #43e97b;
+        }
+        
+        .shop-item.owned {
+            background: rgba(67, 233, 123, 0.2);
+        }
+        
+        .buy-btn, .equip-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .buy-btn {
+            background: #43e97b;
+            color: #fff;
+        }
+        
+        .buy-btn:hover:not(:disabled) {
+            background: #38f9d7;
+            transform: scale(1.05);
+        }
+        
+        .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .equip-btn {
+            background: #4facfe;
+            color: #fff;
+        }
+        
+        .equip-btn:hover:not(:disabled) {
+            background: #00f2fe;
+            transform: scale(1.05);
+        }
+        
+        .equip-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .equip-btn.equipped {
+            background: #ffd700;
+            color: #333;
+        }
+        
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 10px;
+        }
+        
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .gallery-item.locked {
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+        
+        .gallery-item.unlocked {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.02);
+        }
+        
+        .gallery-item-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .gallery-item-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .gallery-item-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .gallery-item-progress {
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #43e97b, #38f9d7);
+            transition: width 0.3s ease;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        
+            .score-display {
+                font-size: 1.5rem;
+            }
+        
+            .stats-display {
+                flex-direction: column;
+                gap: 10px;
+            }
+        
+            .click-button {
+                width: 150px;
+                height: 150px;
+                font-size: 3rem;
+            }
+        
+            .tabs {
+                flex-direction: column;
+            }
+        
+            .tab-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎮 Кликер Игра</h1>
+            <div class="score-display">
+                <span>💰 Монеты: </span>
+                <span id="score">0</span>
+            </div>
+            <div class="stats-display">
+                <span>📊 Сила клика: <span id="click-power">1</span></span>
+                <span>⚡ Авто-клик: <span id="auto-click">0</span>/сек</span>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <main class="main-area">
+            <!-- Click Button Section -->
+            <section class="click-section">
+                <div class="click-button-container">
+                    <button id="click-btn" class="click-button">
+                        <span class="click-icon">🖱️</span>
+                    </button>
+                    <div id="click-effect" class="click-effect"></div>
+                </div>
+            </section>
+
+            <!-- Navigation Tabs -->
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="upgrades">🛒 Улучшения</button>
+                <button class="tab-btn" data-tab="skins">🎨 Скины</button>
+                <button class="tab-btn" data-tab="gallery">🖼️ Галерея</button>
+            </nav>
+
+            <!-- Tab Contents -->
+            <div class="tab-content">
+                <!-- Upgrades Tab -->
+                <div id="upgrades" class="tab-panel active">
+                    <h2>Магазин Улучшений</h2>
+                    <div class="shop-grid" id="upgrades-shop">
+                        <!-- Upgrades will be generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Skins Tab -->
+                <div id="skins" class="tab-panel">
+                    <h2>Магазин Скинов</h2>
+                    <div class="shop-grid" id="skins-shop">
+                        <!-- Skins will be generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Gallery Tab -->
+                <div id="gallery" class="tab-panel">
+                    <h2>Галерея Достижений</h2>
+                    <div class="gallery-grid" id="gallery-grid">
+                        <!-- Gallery items will be generated by JS -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Всего кликов: <span id="total-clicks">0</span> | 
+               Всего монет заработано: <span id="total-earned">0</span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Game State
+        const gameState = {
+            score: 0,
+            totalClicks: 0,
+            totalEarned: 0,
+            clickPower: 1,
+            autoClick: 0,
+            currentSkin: 'default',
+            ownedSkins: ['default'],
+            ownedUpgrades: [],
+            unlockedGallery: []
+        };
+        
+        // Upgrades Data
+        const upgrades = [
+            {
+                id: 'upgrade1',
+                name: 'Усиленный клик',
+                description: '+1 к силе клика',
+                icon: '💪',
+                basePrice: 15,
+                priceMultiplier: 1.5,
+                level: 0,
+                effect: () => { gameState.clickPower += 1; }
+            },
+            {
+                id: 'upgrade2',
+                name: 'Двойной клик',
+                description: '+2 к силе клика',
+                icon: '✌️',
+                basePrice: 50,
+                priceMultiplier: 1.6,
+                level: 0,
+                effect: () => { gameState.clickPower += 2; }
+            },
+            {
+                id: 'upgrade3',
+                name: 'Авто-кликер',
+                description: '+1 монета в секунду',
+                icon: '🤖',
+                basePrice: 100,
+                priceMultiplier: 1.4,
+                level: 0,
+                effect: () => { gameState.autoClick += 1; }
+            },
+            {
+                id: 'upgrade4',
+                name: 'Супер клик',
+                description: '+5 к силе клика',
+                icon: '⚡',
+                basePrice: 250,
+                priceMultiplier: 1.7,
+                level: 0,
+                effect: () => { gameState.clickPower += 5; }
+            },
+            {
+                id: 'upgrade5',
+                name: 'Фабрика монет',
+                description: '+5 монет в секунду',
+                icon: '🏭',
+                basePrice: 500,
+                priceMultiplier: 1.5,
+                level: 0,
+                effect: () => { gameState.autoClick += 5; }
+            },
+            {
+                id: 'upgrade6',
+                name: 'Золотой клик',
+                description: '+10 к силе клика',
+                icon: '👑',
+                basePrice: 1000,
+                priceMultiplier: 1.8,
+                level: 0,
+                effect: () => { gameState.clickPower += 10; }
+            },
+            {
+                id: 'upgrade7',
+                name: 'Банк монет',
+                description: '+20 монет в секунду',
+                icon: '🏦',
+                basePrice: 2000,
+                priceMultiplier: 1.6,
+                level: 0,
+                effect: () => { gameState.autoClick += 20; }
+            },
+            {
+                id: 'upgrade8',
+                name: 'Мега клик',
+                description: '+50 к силе клика',
+                icon: '🚀',
+                basePrice: 5000,
+                priceMultiplier: 2.0,
+                level: 0,
+                effect: () => { gameState.clickPower += 50; }
+            }
+        ];
+        
+        // Skins Data
+        const skins = [
+            {
+                id: 'default',
+                name: 'Классический',
+                description: 'Обычная кнопка',
+                icon: '🖱️',
+                price: 0,
+                class: ''
+            },
+            {
+                id: 'skin1',
+                name: 'Синяя волна',
+                description: 'Стильный синий градиент',
+                icon: '🌊',
+                price: 200,
+                class: 'skin-1'
+            },
+            {
+                id: 'skin2',
+                name: 'Зелёная энергия',
+                description: 'Энергичный зелёный цвет',
+                icon: '⚡',
+                price: 500,
+                class: 'skin-2'
+            },
+            {
+                id: 'skin3',
+                name: 'Розовый закат',
+                description: 'Тёплый розово-жёлтый',
+                icon: '🌅',
+                price: 1000,
+                class: 'skin-3'
+            },
+            {
+                id: 'skin4',
+                name: 'Пастель',
+                description: 'Нежные пастельные тона',
+                icon: '🎨',
+                price: 2500,
+                class: 'skin-4'
+            },
+            {
+                id: 'skin5',
+                name: 'Космос',
+                description: 'Таинственный фиолетовый',
+                icon: '🌌',
+                price: 5000,
+                class: 'skin-5'
+            }
+        ];
+        
+        // Gallery Achievements
+        const achievements = [
+            {
+                id: 'ach1',
+                name: 'Первый клик',
+                description: 'Сделайте первый клик',
+                icon: '👆',
+                requirement: 1,
+                type: 'clicks',
+                unlocked: false
+            },
+            {
+                id: 'ach2',
+                name: 'Начинающий',
+                description: '100 кликов',
+                icon: '🎯',
+                requirement: 100,
+                type: 'clicks',
+                unlocked: false
+            },
+            {
+                id: 'ach3',
+                name: 'Любитель',
+                description: '500 кликов',
+                icon: '⭐',
+                requirement: 500,
+                type: 'clicks',
+                unlocked: false
+            },
+            {
+                id: 'ach4',
+                name: 'Профессионал',
+                description: '1000 кликов',
+                icon: '🏆',
+                requirement: 1000,
+                type: 'clicks',
+                unlocked: false
+            },
+            {
+                id: 'ach5',
+                name: 'Мастер',
+                description: '5000 кликов',
+                icon: '💎',
+                requirement: 5000,
+                type: 'clicks',
+                unlocked: false
+            },
+            {
+                id: 'ach6',
+                name: 'Легенда',
+                description: '10000 кликов',
+                icon: '👑',
+                requirement: 10000,
+                type: 'clicks',
+                unlocked: false
+            },
+            {
+                id: 'ach7',
+                name: 'Богач',
+                description: 'Заработать 1000 монет',
+                icon: '💰',
+                requirement: 1000,
+                type: 'earned',
+                unlocked: false
+            },
+            {
+                id: 'ach8',
+                name: 'Магнат',
+                description: 'Заработать 10000 монет',
+                icon: '💎',
+                requirement: 10000,
+                type: 'earned',
+                unlocked: false
+            },
+            {
+                id: 'ach9',
+                name: 'Коллекционер',
+                description: 'Купить 3 скина',
+                icon: '🎨',
+                requirement: 3,
+                type: 'skins',
+                unlocked: false
+            },
+            {
+                id: 'ach10',
+                name: 'Улучшатель',
+                description: 'Купить 5 улучшений',
+                icon: '🛒',
+                requirement: 5,
+                type: 'upgrades',
+                unlocked: false
+            }
+        ];
+        
+        // DOM Elements
+        const scoreEl = document.getElementById('score');
+        const clickPowerEl = document.getElementById('click-power');
+        const autoClickEl = document.getElementById('auto-click');
+        const totalClicksEl = document.getElementById('total-clicks');
+        const totalEarnedEl = document.getElementById('total-earned');
+        const clickBtn = document.getElementById('click-btn');
+        const clickEffectEl = document.getElementById('click-effect');
+        const upgradesShopEl = document.getElementById('upgrades-shop');
+        const skinsShopEl = document.getElementById('skins-shop');
+        const galleryGridEl = document.getElementById('gallery-grid');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+        
+        // Initialize Game
+        function initGame() {
+            loadGame();
+            renderUpgrades();
+            renderSkins();
+            renderGallery();
+            updateUI();
+            startAutoClick();
+        }
+        
+        // Save/Load Game
+        function saveGame() {
+            localStorage.setItem('clickerGame', JSON.stringify(gameState));
+        }
+        
+        function loadGame() {
+            const saved = localStorage.getItem('clickerGame');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                Object.assign(gameState, parsed);
+                
+                // Restore upgrade levels
+                upgrades.forEach(upgrade => {
+                    const savedUpgrade = parsed.ownedUpgrades?.find(u => u.id === upgrade.id);
+                    if (savedUpgrade) {
+                        upgrade.level = savedUpgrade.level;
+                    }
+                });
+                
+                // Restore achievements
+                achievements.forEach(ach => {
+                    const savedAch = parsed.unlockedGallery?.find(a => a.id === ach.id);
+                    if (savedAch) {
+                        ach.unlocked = true;
+                    }
+                });
+            }
+        }
+        
+        // Update UI
+        function updateUI() {
+            scoreEl.textContent = Math.floor(gameState.score);
+            clickPowerEl.textContent = gameState.clickPower;
+            autoClickEl.textContent = gameState.autoClick;
+            totalClicksEl.textContent = gameState.totalClicks;
+            totalEarnedEl.textContent = Math.floor(gameState.totalEarned);
+            
+            // Update button skin
+            clickBtn.className = 'click-button';
+            if (gameState.currentSkin !== 'default') {
+                const skin = skins.find(s => s.id === gameState.currentSkin);
+                if (skin) {
+                    clickBtn.classList.add(skin.class);
+                }
+            }
+            
+            checkAchievements();
+            saveGame();
+        }
+        
+        // Click Handler
+        clickBtn.addEventListener('click', (e) => {
+            gameState.score += gameState.clickPower;
+            gameState.totalClicks++;
+            gameState.totalEarned += gameState.clickPower;
+            
+            // Show click effect
+            showClickEffect(e);
+            
+            updateUI();
+        });
+        
+        function showClickEffect(e) {
+            const rect = clickBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.textContent = `+${gameState.clickPower}`;
+            effect.style.left = `${x}px`;
+            effect.style.top = `${y}px`;
+            
+            clickBtn.parentElement.appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 1000);
+        }
+        
+        // Auto Click
+        function startAutoClick() {
+            setInterval(() => {
+                if (gameState.autoClick > 0) {
+                    gameState.score += gameState.autoClick;
+                    gameState.totalEarned += gameState.autoClick;
+                    updateUI();
+                }
+            }, 1000);
+        }
+        
+        // Tab Navigation
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabPanels.forEach(p => p.classList.remove('active'));
+                
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Event delegation for upgrades shop
+        upgradesShopEl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('buy-btn') && !e.target.disabled) {
+                const upgradeId = e.target.dataset.id;
+                buyUpgrade(upgradeId);
+            }
+        });
+
+        // Event delegation for skins shop
+        skinsShopEl.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON' && !e.target.disabled) {
+                const skinId = e.target.dataset.id;
+                const skin = skins.find(s => s.id === skinId);
+
+                if (gameState.ownedSkins.includes(skinId)) {
+                    equipSkin(skinId);
+                } else {
+                    buySkin(skinId);
+                }
+            }
+        });
+        
+        // Render Upgrades
+        function renderUpgrades() {
+            upgradesShopEl.innerHTML = '';
+            
+            upgrades.forEach(upgrade => {
+                const currentPrice = Math.floor(upgrade.basePrice * Math.pow(upgrade.priceMultiplier, upgrade.level));
+                
+                const item = document.createElement('div');
+                item.className = 'shop-item';
+                if (upgrade.level > 0) {
+                    item.classList.add('owned');
+                }
+                
+                item.innerHTML = `
+                    <div class="shop-item-icon">${upgrade.icon}</div>
+                    <div class="shop-item-info">
+                        <div class="shop-item-name">${upgrade.name} (Ур. ${upgrade.level})</div>
+                        <div class="shop-item-description">${upgrade.description}</div>
+                        <div class="shop-item-price">💰 ${currentPrice}</div>
+                    </div>
+                    <button class="buy-btn" data-id="${upgrade.id}" ${gameState.score < currentPrice ? 'disabled' : ''}>
+                        ${upgrade.level > 0 ? 'Купить ещё' : 'Купить'}
+                    </button>
+                `;
+                
+                upgradesShopEl.appendChild(item);
+            });
+        }
+        
+        function buyUpgrade(upgradeId) {
+            const upgrade = upgrades.find(u => u.id === upgradeId);
+            const currentPrice = Math.floor(upgrade.basePrice * Math.pow(upgrade.priceMultiplier, upgrade.level));
+            
+            if (gameState.score >= currentPrice) {
+                gameState.score -= currentPrice;
+                upgrade.level++;
+                upgrade.effect();
+                
+                // Track owned upgrades
+                const existing = gameState.ownedUpgrades.find(u => u.id === upgradeId);
+                if (!existing) {
+                    gameState.ownedUpgrades.push({ id: upgradeId, level: 1 });
+                } else {
+                    existing.level = upgrade.level;
+                }
+                
+                renderUpgrades();
+                updateUI();
+            }
+        }
+        
+        // Render Skins
+        function renderSkins() {
+            skinsShopEl.innerHTML = '';
+            
+            skins.forEach(skin => {
+                const isOwned = gameState.ownedSkins.includes(skin.id);
+                const isEquipped = gameState.currentSkin === skin.id;
+                
+                const item = document.createElement('div');
+                item.className = 'shop-item';
+                if (isOwned) {
+                    item.classList.add('owned');
+                }
+                
+                let buttonText, buttonClass, buttonDisabled;
+                if (isEquipped) {
+                    buttonText = 'Надето';
+                    buttonClass = 'equip-btn equipped';
+                    buttonDisabled = true;
+                } else if (isOwned) {
+                    buttonText = 'Надеть';
+                    buttonClass = 'equip-btn';
+                    buttonDisabled = false;
+                } else {
+                    buttonText = 'Купить';
+                    buttonClass = 'buy-btn';
+                    buttonDisabled = gameState.score < skin.price;
+                }
+                
+                item.innerHTML = `
+                    <div class="shop-item-icon">${skin.icon}</div>
+                    <div class="shop-item-info">
+                        <div class="shop-item-name">${skin.name}</div>
+                        <div class="shop-item-description">${skin.description}</div>
+                        <div class="shop-item-price">💰 ${skin.price}</div>
+                    </div>
+                    <button class="${buttonClass}" data-id="${skin.id}" ${buttonDisabled ? 'disabled' : ''}>
+                        ${buttonText}
+                    </button>
+                `;
+                
+                skinsShopEl.appendChild(item);
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('#skins-shop button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const skinId = btn.dataset.id;
+                    const skin = skins.find(s => s.id === skinId);
+                    
+                    if (gameState.ownedSkins.includes(skinId)) {
+                        equipSkin(skinId);
+                    } else {
+                        buySkin(skinId);
+                    }
+                });
+            });
+        }
+        
+        function buySkin(skinId) {
+            const skin = skins.find(s => s.id === skinId);
+            
+            if (gameState.score >= skin.price) {
+                gameState.score -= skin.price;
+                gameState.ownedSkins.push(skinId);
+                
+                renderSkins();
+                updateUI();
+            }
+        }
+        
+        function equipSkin(skinId) {
+            gameState.currentSkin = skinId;
+            renderSkins();
+            updateUI();
+        }
+        
+        // Render Gallery
+        function renderGallery() {
+            galleryGridEl.innerHTML = '';
+            
+            achievements.forEach(ach => {
+                const isUnlocked = ach.unlocked;
+                let progress = 0;
+                let current = 0;
+                
+                if (ach.type === 'clicks') {
+                    current = gameState.totalClicks;
+                    progress = Math.min(100, (current / ach.requirement) * 100);
+                } else if (ach.type === 'earned') {
+                    current = Math.floor(gameState.totalEarned);
+                    progress = Math.min(100, (current / ach.requirement) * 100);
+                } else if (ach.type === 'skins') {
+                    current = gameState.ownedSkins.length - 1; // Exclude default
+                    progress = Math.min(100, (current / ach.requirement) * 100);
+                } else if (ach.type === 'upgrades') {
+                    current = gameState.ownedUpgrades.length;
+                    progress = Math.min(100, (current / ach.requirement) * 100);
+                }
+                
+                const item = document.createElement('div');
+                item.className = `gallery-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+                
+                item.innerHTML = `
+                    <div class="gallery-item-icon">${isUnlocked ? ach.icon : '🔒'}</div>
+                    <div class="gallery-item-title">${isUnlocked ? ach.name : '???'}</div>
+                    <div class="gallery-item-description">${isUnlocked ? ach.description : 'Продолжайте играть!'}</div>
+                    ${!isUnlocked ? `
+                        <div class="gallery-item-progress">
+                            Прогресс: ${Math.floor(current)} / ${ach.requirement}
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                    ` : ''}
+                `;
+                
+                galleryGridEl.appendChild(item);
+            });
+        }
+        
+        function checkAchievements() {
+            let changed = false;
+            
+            achievements.forEach(ach => {
+                if (!ach.unlocked) {
+                    let unlocked = false;
+                    
+                    if (ach.type === 'clicks' && gameState.totalClicks >= ach.requirement) {
+                        unlocked = true;
+                    } else if (ach.type === 'earned' && gameState.totalEarned >= ach.requirement) {
+                        unlocked = true;
+                    } else if (ach.type === 'skins' && (gameState.ownedSkins.length - 1) >= ach.requirement) {
+                        unlocked = true;
+                    } else if (ach.type === 'upgrades' && gameState.ownedUpgrades.length >= ach.requirement) {
+                        unlocked = true;
+                    }
+                    
+                    if (unlocked) {
+                        ach.unlocked = true;
+                        gameState.unlockedGallery.push({ id: ach.id });
+                        changed = true;
+                    }
+                }
+            });
+            
+            if (changed) {
+                renderGallery();
+            }
+        }
+        
+        // Start the game
+        initGame();
+    </script>
+</body>
+</html>
