@@ -1,12 +1,36 @@
 ```
-# Dependencies
-node_modules/
+# Unity specific
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+*.unityproj
+*.sln
+*.csproj
+*.user
+*.userprefs
+*.pidb
+*.suo
+*.lock
+*.meta
+*.prefab
+*.asset
+*.unitypackage
+[Ll]ocal/[Gg]enerated/
+[Rr]esult[sd]/
+[Uu]nity[Tt]emp/
+[Bb]uild[Ll]og.txt
+[Ll]ibrary/[Bb]uilds/
 
-# Editors
+# Visual Studio Code
 .vscode/
 
 # Environment
 .env
 .env.local
 *.env.*
+
+# Logs
+*.log
 ```
