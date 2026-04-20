@@ -58,6 +58,18 @@
             font-size: 1.2rem;
         }
         
+        .crystals-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 10px;
+            background: rgba(138, 43, 226, 0.3);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            color: #9370db;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
         /* Main Area */
         .main-area {
             background: rgba(255, 255, 255, 0.1);
@@ -388,6 +400,186 @@
             opacity: 0.9;
         }
         
+        .donate-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .donate-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .donate-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(145deg, #ffd700, #ffed4e);
+            color: #333;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .donate-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+            background: linear-gradient(145deg, #ffed4e, #ffd700);
+        }
+        
+        .donate-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .donate-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .donate-method {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .donate-method:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .donate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .donate-modal.active {
+            display: flex;
+        }
+        
+        .donate-modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        .donate-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .donate-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .donate-modal h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        
+        .donate-modal p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .donate-amounts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .donate-amount-btn {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .donate-amount-btn:hover,
+        .donate-amount-btn.selected {
+            background: rgba(255, 215, 0, 0.4);
+            border-color: #ffd700;
+            transform: scale(1.05);
+        }
+        
+        .donate-custom-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .donate-custom-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .donate-confirm-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(145deg, #43e97b, #38f9d7);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .donate-confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(67, 233, 123, 0.4);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
@@ -427,6 +619,10 @@
             <div class="score-display">
                 <span>💰 Монеты: </span>
                 <span id="score">0</span>
+            </div>
+            <div class="crystals-display">
+                <span>💎 Донат-кристаллы: </span>
+                <span id="donate-crystals">0</span>
             </div>
             <div class="stats-display">
                 <span>📊 Сила клика: <span id="click-power">1</span></span>
@@ -485,13 +681,44 @@
         <footer class="footer">
             <p>Всего кликов: <span id="total-clicks">0</span> | 
                Всего монет заработано: <span id="total-earned">0</span></p>
+            
+            <!-- Donate Section -->
+            <div class="donate-section">
+                <h3 class="donate-title">💎 Поддержите разработчика</h3>
+                <button class="donate-btn" onclick="openDonateModal()">❤️ Сделать донат</button>
+                <div class="donate-methods">
+                    <span class="donate-method" onclick="openDonateModal()">💳 Карта</span>
+                    <span class="donate-method" onclick="openDonateModal()">📱 Qiwi</span>
+                    <span class="donate-method" onclick="openDonateModal()">₿ Crypto</span>
+                </div>
+            </div>
         </footer>
+    </div>
+
+    <!-- Donate Modal -->
+    <div class="donate-modal" id="donate-modal">
+        <div class="donate-modal-content">
+            <button class="donate-modal-close" onclick="closeDonateModal()">&times;</button>
+            <h3>💎 Поддержка проекта</h3>
+            <p>Выберите сумму доната или введите свою:</p>
+            <div class="donate-amounts">
+                <button class="donate-amount-btn" onclick="selectAmount(50)">50₽</button>
+                <button class="donate-amount-btn" onclick="selectAmount(100)">100₽</button>
+                <button class="donate-amount-btn" onclick="selectAmount(250)">250₽</button>
+                <button class="donate-amount-btn" onclick="selectAmount(500)">500₽</button>
+                <button class="donate-amount-btn" onclick="selectAmount(1000)">1000₽</button>
+                <button class="donate-amount-btn" onclick="selectAmount(5000)">5000₽</button>
+            </div>
+            <input type="number" class="donate-custom-input" id="custom-amount" placeholder="Своя сумма (₽)" min="10">
+            <button class="donate-confirm-btn" onclick="confirmDonate()">Перейти к оплате</button>
+        </div>
     </div>
 
     <script>
         // Game State
         const gameState = {
             score: 0,
+            donateCrystals: 0,
             totalClicks: 0,
             totalEarned: 0,
             clickPower: 1,
@@ -734,6 +961,7 @@
         
         // DOM Elements
         const scoreEl = document.getElementById('score');
+        const donateCrystalsEl = document.getElementById('donate-crystals');
         const clickPowerEl = document.getElementById('click-power');
         const autoClickEl = document.getElementById('auto-click');
         const totalClicksEl = document.getElementById('total-clicks');
@@ -788,6 +1016,7 @@
         // Update UI
         function updateUI() {
             scoreEl.textContent = Math.floor(gameState.score);
+            donateCrystalsEl.textContent = gameState.donateCrystals;
             clickPowerEl.textContent = gameState.clickPower;
             autoClickEl.textContent = gameState.autoClick;
             totalClicksEl.textContent = gameState.totalClicks;
@@ -1083,6 +1312,69 @@
                 renderGallery();
             }
         }
+        
+        // Donate Modal Functions
+        let selectedDonateAmount = 0;
+        
+        function openDonateModal() {
+            document.getElementById('donate-modal').classList.add('active');
+            selectedDonateAmount = 0;
+            document.getElementById('custom-amount').value = '';
+            document.querySelectorAll('.donate-amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+        }
+        
+        function closeDonateModal() {
+            document.getElementById('donate-modal').classList.remove('active');
+        }
+        
+        function selectAmount(amount) {
+            selectedDonateAmount = amount;
+            document.querySelectorAll('.donate-amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            document.getElementById('custom-amount').value = '';
+        }
+        
+
+        function confirmDonate() {
+            const customAmount = document.getElementById('custom-amount').value;
+            const finalAmount = customAmount ? parseInt(customAmount) : selectedDonateAmount;
+
+            if (!finalAmount || finalAmount < 10) {
+                alert('Минимальная сумма доната: 10₽');
+                return;
+            }
+
+            // Награда за донат: монеты и донат-кристаллы
+            const coinsReward = finalAmount * 10; // 10 монет за 1 рубль
+            const crystalsReward = Math.floor(finalAmount / 10); // 1 кристалл за 10 рублей
+
+            gameState.score += coinsReward;
+            gameState.donateCrystals += crystalsReward;
+
+            alert(`Спасибо за поддержку проекта!
+Сумма: ${finalAmount}₽
+
+🎁 Награда:
+💰 Монеты: +${coinsReward}
+💎 Донат-кристаллы: +${crystalsReward}
+
+В реальном проекте здесь будет интеграция с платежной системой.`);
+
+            updateUI();
+        
+            closeDonateModal();
+        
+        }
+        
+        document.getElementById('donate-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDonateModal();
+            }
+        });
         
         // Start the game
         initGame();
