@@ -1,12 +1,19 @@
 ```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
 # Dependencies
 node_modules/
+venv/
+.venv/
+.env
+.env.local
 
 # Editors
 .vscode/
 
-# Environment
-.env
-.env.local
-*.env.*
+# Logs and temp files
+*.log
+*.tmp
 ```
